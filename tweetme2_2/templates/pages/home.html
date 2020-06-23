@@ -102,9 +102,8 @@ function loadTweets(tweetsElement) {
     xhr.responseType = responseType
     xhr.open(method, url)
     xhr.onload = function(){
-        console.log(xhr.response)
         const serverResponse = xhr.response
-        const listedItems = serverResponse.response // array
+        const listedItems = serverResponse // array
         var finalTweetStr = ""
         var i;
         for (i=0; i<listedItems.length; i++){
