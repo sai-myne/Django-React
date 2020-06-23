@@ -1,11 +1,11 @@
 1. Tweets
-    -> Creating
-        -> Text
-        -> Image -> Media Storage Server
     -> User Permisssions
-        -> Delete
-        -> Retweeting
-        -> Liking
+        -> Creating
+            -> Text
+            -> Image -> Media Storage Server        
+            -> Delete
+            -> Retweeting
+            -> Liking
 2. Users
     -> Register
     -> Login
