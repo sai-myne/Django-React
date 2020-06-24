@@ -4,10 +4,17 @@ import { loadTweets } from "../lookup";
 
 export function TweetsComponent(props) {
   const textAreaRef = React.createRef();
+  const [newTweets, setNewTweet] = useState([])
   const hanldeSubmit = (event) => {
     event.preventDefault();
     const newVal = textAreaRef.current.value;
-    console.log(newVal);
+    let tempNewTweets = [...newTweets]
+    tempNewTweets.unshift({
+        content: newVal,
+        likes: 0,
+        id: 12312
+    })
+    setNewTweet(tempNewTweets)
     textAreaRef.current.value = "";
   };
   return (
@@ -25,23 +32,28 @@ export function TweetsComponent(props) {
           </button>
         </form>
       </div>
-      <TweetsList />
+      <TweetsList newTweets={newTweets} />
     </div>
   );
 }
 
 export function TweetsList(props) {
-  const [tweets, setTweets] = useState([]);
-
+  const [tweetsInit, setTweetsInit] = useState([]);
+  const [tweets, setTweets] = useState([])
+  useEffect(() => {
+      const final = [...props.newTweets].concat(tweetsInit)
+      if (final.length !== tweets.length){
+          setTweets(final)
+      }
+  }, [props.newTweets, tweets, tweetsInit])
   useEffect(() => {
     // do my lookup
     const myCallback = (response, status) => {
       if (status === 200) {
-        setTweets(response);
+        setTweetsInit(response);
       } else {
         alert("There was an error");
       }
-      setTweets(response);
     };
     loadTweets(myCallback);
   }, []);
