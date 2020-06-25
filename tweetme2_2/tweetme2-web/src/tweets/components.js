@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { apitweetCreate,apiTweetList } from "./lookup";
+import { apiTweetAction,apiTweetCreate,apiTweetList } from "./lookup";
 
 export function TweetsComponent(props) {
   const textAreaRef = React.createRef();
@@ -19,7 +19,7 @@ export function TweetsComponent(props) {
     // backend api request
     event.preventDefault();
     const newVal = textAreaRef.current.value;    
-    apitweetCreate(newVal, handleBakcendUpdate)    
+    apiTweetCreate(newVal, handleBakcendUpdate)    
     textAreaRef.current.value = "";
   };
   return (
@@ -79,25 +79,24 @@ export function TweetsList(props) {
 export function ActionBtn(props) {
   const { tweet, action } = props;
   const [likes, setLikes] = useState(tweet.likes ? tweet.likes : 0);
-  const [userLike, setUserLike] = useState(
-    tweet.userLike === true ? true : false
-  );
+  // const [userLike, setUserLike] = useState(
+  //   tweet.userLike === true ? true : false
+  // );
   const className = props.className
     ? props.className
     : "btn btn-primary btn-sm";
   const actionDisplay = action.display ? action.display : "Action";
+  const handleActionBackendEvent = (response, status) => {
+    console.log(response, status)
+    if(status === 200){
+      setLikes(response.likes)
+      //setUserLike(true)
+    }
+  }
   const handleClick = (event) => {
     event.preventDefault();
-    if (action.type === "like") {
-      if (userLike === true) {
-        // perhaps u Unlike it?
-        setLikes(likes - 1);
-        setUserLike(false);
-      } else {
-        setLikes(likes + 1);
-        setUserLike(true);
-      }
-    }
+    apiTweetAction(tweet.id, action.type, handleActionBackendEvent)
+    
   };
   const display =
     action.type === "like" ? `${likes} ${actionDisplay}` : actionDisplay;
@@ -124,7 +123,7 @@ export function Tweet(props) {
           tweet={tweet}
           action={{ type: "unlike", display: "Unlike" }}
         />
-        <ActionBtn tweet={tweet} action={{ type: "retweet" }} />
+        <ActionBtn tweet={tweet} action={{ type: "retweet", display: "Retweet" }} />
       </div>
     </div>
   );
