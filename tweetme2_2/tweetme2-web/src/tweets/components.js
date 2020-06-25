@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { apiTweetAction, apiTweetCreate, apiTweetList } from "./lookup";
 
 export function TweetsComponent(props) {
+  console.log(props)
   const textAreaRef = React.createRef();
   const [newTweets, setNewTweet] = useState([]);
   const handleBakcendUpdate = (response, status) => {
