@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { createTweet,loadTweets } from "../lookup";
+import { apitweetCreate,apiTweetList } from "./lookup";
 
 export function TweetsComponent(props) {
   const textAreaRef = React.createRef();
@@ -19,7 +19,7 @@ export function TweetsComponent(props) {
     // backend api request
     event.preventDefault();
     const newVal = textAreaRef.current.value;    
-    createTweet(newVal, handleBakcendUpdate)    
+    apitweetCreate(newVal, handleBakcendUpdate)    
     textAreaRef.current.value = "";
   };
   return (
@@ -54,7 +54,7 @@ export function TweetsList(props) {
   }, [props.newTweets, tweets, tweetsInit])
   useEffect(() => {
     if(tweetsDidSet === false){
-      const myCallback = (response, status) => {
+      const handleTweetListLookup = (response, status) => {
         if (status === 200) {
           setTweetsInit(response);
           setTweetsDidSet(true)
@@ -62,7 +62,7 @@ export function TweetsList(props) {
           alert("There was an error");
         }
       };
-      loadTweets(myCallback);
+      apiTweetList(handleTweetListLookup);
     }    
   }, [tweetsInit, tweetsDidSet, setTweetsDidSet]);
   return tweets.map((item, index) => {
