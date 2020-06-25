@@ -65,10 +65,19 @@ export function TweetsList(props) {
       apiTweetList(handleTweetListLookup);
     }
   }, [tweetsInit, tweetsDidSet, setTweetsDidSet]);
+  const handleDidRetweet = (newTweet) => {
+    const updateTweetsInit = [...tweetsInit]
+    updateTweetsInit.unshift(newTweet)
+    setTweetsInit(updateTweetsInit)
+    const updateFinalTweets = [...tweets]
+    updateFinalTweets.unshift(tweets)
+    setTweetsInit(updateFinalTweets)
+  }
   return tweets.map((item, index) => {
     return (
       <Tweet
         tweet={item}
+        didRetweet={handleDidRetweet}
         key={`${index}-{item.id}`}
         className="my-5 py-5 border bg-white text-dark"
       />
@@ -109,14 +118,14 @@ export function ParentTweet(props) {
     <div className="row">
       <div className="col-11 mx-auto p-3 border rounded">
         <p className="mb-0 text-muted small">Retweet</p>
-        <Tweet className={" "} tweet={tweet.parent} />
+        <Tweet hideActions className={" "} tweet={tweet.parent} />
       </div>
     </div>
   ) : null;
 }
 
 export function Tweet(props) {
-  const { tweet } = props;
+  const { tweet, didRetweet, hideActions } = props;
   const [actionTweet, setActionTweet] = useState(
     props.tweet ? props.tweet : null
   );
@@ -128,7 +137,9 @@ export function Tweet(props) {
     if (status === 200){
       setActionTweet(newActionTweet)
     } else if (status === 201) {
-
+      if (didRetweet){
+        didRetweet(newActionTweet)
+      }
     }
   }
   return (
@@ -139,7 +150,7 @@ export function Tweet(props) {
         </p>
         <ParentTweet tweet={tweet} />
       </div>
-      {actionTweet && (
+      {(actionTweet && hideActions !== true) && (
         <div className="btn btn-group">
           <ActionBtn
             tweet={actionTweet}
