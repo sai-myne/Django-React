@@ -11,7 +11,6 @@ export function ActionBtn(props) {
     const actionDisplay = action.display ? action.display : "Action";
   
     const handleActionBackendEvent = (response, status) => {
-      console.log(response, status);
       if ((status === 200 || status === 201) && didPerformAction) {
         didPerformAction(response, status)
       }
