@@ -12,7 +12,7 @@ class TweetLike(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
 class TweetQuerySet(models.QuerySet):
-    def by_username(self, user):
+    def by_username(self, username):
         return self.filter(user__username__iexact=username)
         
     def feed(self, user):
