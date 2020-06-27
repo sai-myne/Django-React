@@ -3,6 +3,28 @@ import { TweetsList } from './list'
 import {TweetCreate} from './create'
 import {apiTweetDetail} from './lookup'
 import {Tweet} from './detail'
+import {FeedList} from './feed'
+
+export function FeedComponent(props) {
+  const [newTweets, setNewTweet] = useState([]);
+
+  const canTweet = props.canTweet === "false" ? false : true
+  const handleNewTweet = (newTweet) => {
+    // backend api response handler
+    let tempNewTweets = [...newTweets];
+    tempNewTweets.unshift(newTweet);
+    setNewTweet(tempNewTweets);
+    
+  };
+  return (
+    <div className={props.className}>
+      <div className="col-12 mb-3">
+        {canTweet === true && <TweetCreate didTweet={handleNewTweet} className='col-12 mb-3' />}
+      </div>
+      <FeedList newTweets={newTweets} {...props} />
+    </div>
+  );
+}
 
 export function TweetsComponent(props) {
   const [newTweets, setNewTweet] = useState([]);
