@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import {FeedComponent, TweetsComponent, TweetDetailComponent} from './tweets'
 import * as serviceWorker from './serviceWorker';
+import { ProfileBadgeComponent } from './profiles/badge';
 
 const appEl = document.getElementById('root')
 if(appEl){
@@ -28,6 +29,15 @@ const tweetDetailElements = document.querySelectorAll(".tweetme-2-detail")
 tweetDetailElements.forEach(container => {
   ReactDOM.render(
     e(TweetDetailComponent, container.dataset),
+    container,
+  )
+})
+
+const userProfileBadgeElements = document.querySelectorAll(".tweetme-2-profile-badge")
+
+userProfileBadgeElements.forEach(container => {
+  ReactDOM.render(
+    e(ProfileBadgeComponent, container.dataset),
     container,
   )
 })
